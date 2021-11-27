@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
-public class Goods {
+public class Goods extends BaseTimeEntity {
 
     @Id
     @Column(name = "GOODS_CODE")

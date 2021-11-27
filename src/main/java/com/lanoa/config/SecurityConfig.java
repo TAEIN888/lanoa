@@ -30,6 +30,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/users/logout"))
                 .logoutSuccessUrl("/");
+//        http.formLogin()
+//                .loginPage("/users/login")
+//                .defaultSuccessUrl("/")
+//                .usernameParameter("email")
+//                .failureUrl("/users/login/error")
+//                .and()
+//                    .authorizeRequests()
+//                    .antMatchers("/", "/users/login", "/users/new", "/css/**", "/js/**").permitAll()
+//                    .anyRequest().authenticated()
+//                .and()
+//                    .logout()
+//                    .logoutRequestMatcher(new AntPathRequestMatcher("/users/logout"))
+//                    .logoutSuccessUrl("/")
+//                .and()
+//                .sessionManagement();
     }
 
     @Override

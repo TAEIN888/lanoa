@@ -1,5 +1,6 @@
 package com.lanoa.controller;
 
+import com.lanoa.constant.Role;
 import com.lanoa.dto.UserFormDto;
 import com.lanoa.entity.User;
 import com.lanoa.service.UserService;
@@ -37,8 +38,14 @@ public class UserController {
         }
 
         try {
-            User user = User.createUser(userFormDto, passwordEncoder);
-            userService.saveUser(user);
+            userService.saveUser(User.builder()
+                            .userName(userFormDto.getUserName())
+                            .email(userFormDto.getEmail())
+                            .password(userFormDto.getPassword())
+                            .address(userFormDto.getAddress())
+                            .role(Role.USER)
+                            .passwordEncoder(passwordEncoder)
+                            .build());
         } catch (IllegalStateException e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "user/userForm";
