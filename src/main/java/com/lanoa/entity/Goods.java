@@ -35,7 +35,4 @@ public class Goods extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     private GoodsSellStatus goodsSellStatus; // 상품 판매 상태
-
-    private LocalDateTime regTime;
-    private LocalDateTime updateTime;
 }
