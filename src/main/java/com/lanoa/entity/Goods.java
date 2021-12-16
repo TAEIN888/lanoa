@@ -1,24 +1,34 @@
 package com.lanoa.entity;
 
 import com.lanoa.constant.GoodsSellStatus;
+import com.lanoa.dto.GoodsFormDto;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "GOODS")
+@Table(name = "TGOODS")
 @Getter
-@Setter
+@NoArgsConstructor
 @ToString
-public class Goods extends BaseTimeEntity {
+public class Goods extends BaseEntity {
 
     @Id
-    @Column(name = "GOODS_CODE")
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long goodsCode; // 상품 코드
+    @GenericGenerator(
+        name = "idGenerator",
+        strategy = "com.lanoa.entity.IdGenerator",
+        parameters = {
+            @Parameter(name = IdGenerator.METHOD, value = "GOODS")
+        }
+    )
+    @GeneratedValue(generator = "idGenerator")
+    @Column(name = "GOODS_CODE", length = 8)
+    private String goodsCode; // 상품 코드
 
     @Column(nullable = false, length = 100)
     private String goodsName; // 상품명
@@ -35,4 +45,22 @@ public class Goods extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     private GoodsSellStatus goodsSellStatus; // 상품 판매 상태
+
+    @Builder
+    public Goods(String goodsCode, String goodsName, Integer price, Integer stockQty, String goodsDetail, GoodsSellStatus goodsSellStatus) {
+        this.goodsCode = goodsCode;
+        this.goodsName = goodsName;
+        this.price = price;
+        this.stockQty = stockQty;
+        this.goodsDetail = goodsDetail;
+        this.goodsSellStatus = goodsSellStatus;
+    }
+
+    public void updateGoods(GoodsFormDto goodsFormDto) {
+        this.goodsName = goodsFormDto.getGoodsName();
+        this.price = goodsFormDto.getPrice();
+        this.stockQty = goodsFormDto.getStockQty();
+        this.goodsDetail = goodsFormDto.getGoodsDetail();
+        this.goodsSellStatus = goodsFormDto.getGoodsSellStatus();
+    }
 }

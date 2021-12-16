@@ -1,19 +1,17 @@
 package com.lanoa.entity;
 
 import com.lanoa.constant.Role;
-import com.lanoa.dto.UserFormDto;
 import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 
-@Table(name = "USER")
+@Entity
+@Table(name = "TUSER")
 @Getter
-@Setter
 @NoArgsConstructor
 @ToString
-@Entity
-public class User extends BaseTimeEntity {
+public class User extends BaseEntity {
 
     @Id
     @Column(name = "USER_NUMBER")

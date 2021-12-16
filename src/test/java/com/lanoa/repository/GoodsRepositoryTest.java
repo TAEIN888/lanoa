@@ -18,7 +18,6 @@ import org.thymeleaf.util.StringUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @SpringBootTest
@@ -34,68 +33,53 @@ class GoodsRepositoryTest {
     @Test
     @DisplayName("상품 저장 테스트")
     public void createGoodsTest() {
-        Goods goods = new Goods();
-
-        goods.setGoodsName("테스트 상품");
-        goods.setPrice(10000);
-        goods.setGoodsDetail("테스트 상품 상세 설명");
-        goods.setGoodsSellStatus(GoodsSellStatus.SELL);
-        goods.setStockQty(300);
-        goods.setRegTime(LocalDateTime.now());
-        goods.setUpdateTime(LocalDateTime.now());
-
-        Goods savedGoods = goodsRepository.save(goods);
+        Goods savedGoods = goodsRepository.save(Goods.builder()
+                .goodsName("테스트 상품")
+                .price(10000)
+                .goodsDetail("테스트 상품 상세 설명")
+                .goodsSellStatus(GoodsSellStatus.SELL)
+                .stockQty(300)
+                .build());
 
         System.out.println(savedGoods.toString());
     }
 
     public void createGoodsList() {
         for (int i = 1; i <= 10; i++) {
-            Goods goods = new Goods();
-
-            goods.setGoodsName("테스트 상품 " + i);
-            goods.setPrice(10000 + i);
-            goods.setGoodsDetail("테스트 상품 상세 설명 " + i);
-            goods.setGoodsSellStatus(GoodsSellStatus.SELL);
-            goods.setStockQty(300);
-            goods.setRegTime(LocalDateTime.now());
-            goods.setUpdateTime(LocalDateTime.now());
-
-            goodsRepository.save(goods);
+            goodsRepository.save(goodsRepository.save(Goods.builder()
+                    .goodsCode("1000000" + i)
+                    .goodsName("테스트 상품 " + i)
+                    .price(10000 + i)
+                    .goodsDetail("테스트 상품 상세 설명 " + i)
+                    .goodsSellStatus(GoodsSellStatus.SELL)
+                    .stockQty(300)
+                    .build()));
         }
     }
 
 
     public void createGoodsList2() {
         for (int i = 1; i <= 5; i++) {
-            Goods goods = new Goods();
-
-            goods.setGoodsName("테스트 상품 " + i);
-            goods.setPrice(10000 + i);
-            goods.setGoodsDetail("테스트 상품 상세 설명 " + i);
-            goods.setGoodsSellStatus(GoodsSellStatus.SELL);
-            goods.setStockQty(100);
-            goods.setRegTime(LocalDateTime.now());
-            goods.setUpdateTime(LocalDateTime.now());
-
-            goodsRepository.save(goods);
+            goodsRepository.save(goodsRepository.save(Goods.builder()
+                    .goodsCode("1000000" + i)
+                    .goodsName("테스트 상품 " + i)
+                    .price(10000 + i)
+                    .goodsDetail("테스트 상품 상세 설명 " + i)
+                    .goodsSellStatus(GoodsSellStatus.SELL)
+                    .stockQty(100)
+                    .build()));
         }
 
         for (int i = 6; i <= 10; i++) {
-            Goods goods = new Goods();
-
-            goods.setGoodsName("테스트 상품 " + i);
-            goods.setPrice(10000 + i);
-            goods.setGoodsDetail("테스트 상품 상세 설명 " + i);
-            goods.setGoodsSellStatus(GoodsSellStatus.SOLD_OUT);
-            goods.setStockQty(0);
-            goods.setRegTime(LocalDateTime.now());
-            goods.setUpdateTime(LocalDateTime.now());
-
-            goodsRepository.save(goods);
+            goodsRepository.save(goodsRepository.save(Goods.builder()
+                    .goodsCode("1000000" + i)
+                    .goodsName("테스트 상품 " + i)
+                    .price(10000 + i)
+                    .goodsDetail("테스트 상품 상세 설명 " + i)
+                    .goodsSellStatus(GoodsSellStatus.SOLD_OUT)
+                    .stockQty(0)
+                    .build()));
         }
-
-
     }
 
     @Test
@@ -164,7 +148,7 @@ class GoodsRepositoryTest {
     @Test
     @DisplayName("Querydsl 조회 테스트1")
     public void queryDslTest() {
-        this.createGoodsList();;
+        this.createGoodsList();
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
         QGoods qGoods = QGoods.goods;
 

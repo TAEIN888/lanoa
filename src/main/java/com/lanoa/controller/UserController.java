@@ -43,7 +43,7 @@ public class UserController {
                             .email(userFormDto.getEmail())
                             .password(userFormDto.getPassword())
                             .address(userFormDto.getAddress())
-                            .role(Role.USER)
+                            .role(Role.ADMIN)
                             .passwordEncoder(passwordEncoder)
                             .build());
         } catch (IllegalStateException e) {

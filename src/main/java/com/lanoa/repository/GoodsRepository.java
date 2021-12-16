@@ -7,9 +7,11 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface GoodsRepository extends JpaRepository<Goods, Long>, QuerydslPredicateExecutor<Goods> {
 
+    Goods findByGoodsCode(String goodsCode);
     List<Goods> findByGoodsName(String goodsName);
 
     List<Goods> findByGoodsNameOrGoodsDetail(String goodsName, String goodsDetail);
