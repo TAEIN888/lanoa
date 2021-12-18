@@ -29,7 +29,7 @@ class RackCodeRepositoryTest {
     @DisplayName("랙코드 저장 테스트")
     public void createRackCodeTest() {
         RackCode savedRackCode = rackCodeRepository.save(RackCode.builder()
-                .rackCode("A010101")
+                .rackCodeId("A010101")
                 .rackGrade(RackGrade.NORMAL)
                 .rackName("정상A랙")
                 .build());
@@ -40,7 +40,7 @@ class RackCodeRepositoryTest {
     public void createRackCodeList() {
         for (int i=1; i<6; i++) {
             rackCodeRepository.save(RackCode.builder()
-                    .rackCode("A01010" + i)
+                    .rackCodeId("A01010" + i)
                     .rackGrade(RackGrade.NORMAL)
                     .rackName("정상A랙")
                     .build());
@@ -52,7 +52,7 @@ class RackCodeRepositoryTest {
     public void selectRackCodeByRackCodeNum() {
         this.createRackCodeList();
 
-        List<RackCode> rackCode = rackCodeRepository.findByRackCode("A010101");
+        List<RackCode> rackCode = rackCodeRepository.findByRackCodeId("A010101");
 
         System.out.println(rackCode.toString());
     }
@@ -66,8 +66,8 @@ class RackCodeRepositoryTest {
         QRackCode qRackCode = QRackCode.rackCode;
 
         JPAQuery<RackCode> query = queryFactory.selectFrom(qRackCode)
-                .where(qRackCode.rackCodeNum.like("A01010" + "%"))
-                .orderBy(qRackCode.rackCodeNum.desc());
+                .where(qRackCode.rackCodeId.like("A01010" + "%"))
+                .orderBy(qRackCode.rackCodeId.desc());
 
         List<RackCode> rackCodeList = query.fetch();
 

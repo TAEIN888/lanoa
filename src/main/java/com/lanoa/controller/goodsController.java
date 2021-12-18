@@ -1,8 +1,14 @@
 package com.lanoa.controller;
 
 import com.lanoa.dto.GoodsFormDto;
+import com.lanoa.dto.GoodsListDto;
+import com.lanoa.dto.GoodsSearchDto;
+import com.lanoa.entity.Goods;
 import com.lanoa.service.GoodsService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -70,5 +77,17 @@ public class goodsController {
         }
 
         return "redirect:/";
+    }
+
+    @GetMapping(value = {"/admin/goodsList", "/admin/goodsList/{page}"})
+    public String goodsAdminPage(GoodsSearchDto goodsSearchDto, @PathVariable("page") Optional<Integer> page, Model model) {
+        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 5);
+        Page<GoodsListDto> goodsList = goodsService.getAdminGoodsPage(goodsSearchDto, pageable);
+
+        model.addAttribute("goodsList", goodsList);
+        model.addAttribute("goodsSearchDto", goodsSearchDto);
+        model.addAttribute("maxPage", 5);
+
+        return "goods/goodsManage";
     }
 }

@@ -40,7 +40,7 @@ public class RackRepositoryTest {
 
     private RackCode createRackCode() {
         RackCode savedRackCode = rackCodeRepository.save(RackCode.builder()
-                .rackCode("A010101")
+                .rackCodeId("A010101")
                 .rackGrade(RackGrade.NORMAL)
                 .rackName("정상A랙")
                 .build());

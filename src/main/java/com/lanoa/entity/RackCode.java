@@ -17,7 +17,7 @@ public class RackCode extends BaseEntity {
 
     @Id
     @Column(nullable = false, length = 7, unique = true, name = "RACK_CODE")
-    private String rackCode; // 랙코드
+    private String rackCodeId; // 랙코드
 
     @Column(nullable = false, length = 100)
     private String rackName; // 랙코드명
@@ -26,8 +26,8 @@ public class RackCode extends BaseEntity {
     private RackGrade rackGrade; // 랙 등급
 
     @Builder
-    public RackCode(String rackCode, String rackName, RackGrade rackGrade) {
-        this.rackCode = rackCode;
+    public RackCode(String rackCodeId, String rackName, RackGrade rackGrade) {
+        this.rackCodeId = rackCodeId;
         this.rackName = rackName;
         this.rackGrade = rackGrade;
     }
