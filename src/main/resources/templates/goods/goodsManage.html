@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{layouts/layout1}">
 
 <!-- 사용자 스크립트 추가 -->
@@ -15,12 +16,12 @@
         });
 
         function page(page) {
-            var searchDateType = $("#searchDateType").val();
-            var searchSellStatus = $("#searchSellStatus").val();
-            var searchType = $("#searchType").val();
-            var searchQuery = $("#searchQuery").val();
+            let searchDateType = $("#searchDateType").val();
+            let searchSellStatus = $("#searchSellStatus").val();
+            let searchType = $("#searchType").val();
+            let searchQuery = $("#searchQuery").val();
 
-            location.href="/admin/goodsList/" + page + "?searchDateType=" + searchDateType
+            location.href="/admin/goodslist/" + page + "?searchDateType=" + searchDateType
                 + "&searchSellStatus=" + searchSellStatus
                 + "&searchType=" + searchType
                 + "&searchQuery=" + searchQuery;
@@ -31,22 +32,32 @@
 <!-- 사용자 CSS 추가 -->
 <th:block layout:fragment="css">
     <style>
-        select{
+        select {
             margin-right:10px;
+        }
+        .goodsList {
+            width: 70%;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
         }
     </style>
 </th:block>
 
 <div layout:fragment="content">
-    <form th:action="@{'/admin/goodsList/' + ${goodsList.number}}" role="form" method="get" th:object="${goodsList}">
-        <table class="table">
+    <form th:action="@{'/admin/goodslist/' + ${goodsList.number}}" role="form" method="get" th:object="${goodsList}" class="goodsList">
+        <p class="h2">
+            상품 관리
+        </p>
+        <button type="button" class="btn btn-outline-info float-right" style="margin-bottom: 10px" onclick="location.href='/admin/goods/new'" sec:authorize="hasAnyAuthority('ROLE_ADMIN')">상품 등록</button>
+        <table class="table table-striped table-hover">
             <thead>
             <tr>
                 <td th:align="center">상품코드</td>
                 <td th:align="center">상품명</td>
                 <td th:align="center">상태</td>
                 <td th:align="center">등록자</td>
-                <td th:align="center">등록일</td>
+                <td th:align="center">등록일시</td>
             </tr>
             </thead>
             <tbody>
@@ -79,7 +90,6 @@
                         <span aria-hidden='true'>Next</span>
                     </a>
                 </li>
-
             </ul>
         </div>
 
@@ -103,6 +113,7 @@
             <input th:field="*{searchQuery}" type="text" class="form-control" placeholder="검색어를 입력해주세요">
             <button id="searchBtn" type="submit" class="btn btn-primary">검색</button>
         </div>
+
     </form>
 </div>
 

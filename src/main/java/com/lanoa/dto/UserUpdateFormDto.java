@@ -4,32 +4,31 @@ import com.lanoa.constant.Role;
 import com.lanoa.entity.User;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.validator.constraints.Length;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.config.Configuration;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 
 @Getter
 @Setter
-public class UserFormDto {
+public class UserUpdateFormDto {
 
     private Long userNumber;
 
     @NotBlank(message = "이름은 필수 입력 값입니다.")
     private String userName;
 
-    @NotEmpty(message = "이메일은 필수 입력 값입니다.")
-    @Email(message = "이메일 형식에 맞게 입력해주세요.")
     private String email;
-
-    @NotEmpty(message = "비밀번호는 필수 입력 값입니다.")
-    @Length(min = 8, max = 16, message = "비밀번호는 8자 이상, 16자 이하로 입력해주세요.")
-    private String password;
 
     @NotEmpty(message = "주소는 필수 입력 값입니다.")
     private String address;
 
+    private Role role;
+
+    private static ModelMapper modelMapper = new ModelMapper();
+
+    public static UserUpdateFormDto of(User user) {
+        return modelMapper.map(user, UserUpdateFormDto.class);
+    }
 }

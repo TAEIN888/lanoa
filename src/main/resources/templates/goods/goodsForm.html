@@ -31,17 +31,25 @@
         .fieldError {
             color: #bd2130;
         }
+        .goodsForm {
+            width: 50%;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
     </style>
 </th:block>
 
 <div layout:fragment="content">
 
-    <form role="form" method="post" th:object="${goodsFormDto}">
+    <form role="form" method="post" th:object="${goodsFormDto}" class="goodsForm">
 
-        <p class="h2">
+        <p class="h2" th:if="${#strings.isEmpty(goodsFormDto.goodsCode)}">
             상품 등록
         </p>
-
+        <p class="h2" th:unless="${#strings.isEmpty(goodsFormDto.goodsCode)}">
+            상품 수정
+        </p>
         <input type="hidden" th:field="*{goodsCode}">
 
         <div class="form-group">

@@ -1,13 +1,19 @@
 package com.lanoa.service;
 
+import com.lanoa.dto.*;
+import com.lanoa.entity.Goods;
 import com.lanoa.entity.User;
 import com.lanoa.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.EntityNotFoundException;
 
 @Service
 @Transactional
@@ -43,5 +49,29 @@ public class UserService implements UserDetailsService {
                 .password(user.getPassword())
                 .roles(user.getRole().toString())
                 .build();
+    }
+
+    @Transactional(readOnly = true)
+    public Page<User> getAdminUserList(UserSearchDto userSearchDto, Pageable pageable) {
+        return userRepository.getAdminUserList(userSearchDto, pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public UserUpdateFormDto getUserInfo(Long userNumber) {
+        User user = userRepository.findById(userNumber)
+                .orElseThrow(EntityNotFoundException::new);
+
+        UserUpdateFormDto userUpdateFormDto = UserUpdateFormDto.of(user);
+
+        return userUpdateFormDto;
+    }
+
+    public Long updateUser(UserUpdateFormDto userUpdateFormDto) throws Exception {
+        User user = userRepository.findById(userUpdateFormDto.getUserNumber())
+                .orElseThrow(EntityNotFoundException::new);
+
+        user.updateUser(userUpdateFormDto);
+
+        return user.getUserNumber();
     }
 }

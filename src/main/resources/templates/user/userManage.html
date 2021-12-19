@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layouts/layout1}">
+
+<!-- 사용자 스크립트 추가 -->
+<th:block layout:fragment="script">
+    <script th:inline="javascript">
+
+        $(document).ready(function() {
+            $("#searchBtn").on("click", function(e) {
+                e.preventDefault();
+                page(0);
+            });
+        });
+
+        function page(page) {
+            let searchUserRole = $("#searchUserRole").val();
+            let searchType = $("#searchType").val();
+            let searchQuery = $("#searchQuery").val();
+
+            location.href="/admin/userList/" + page + "?searchUserRole=" + searchUserRole
+                + "&searchType=" + searchType
+                + "&searchQuery=" + searchQuery;
+        }
+    </script>
+</th:block>
+
+<!-- 사용자 CSS 추가 -->
+<th:block layout:fragment="css">
+    <style>
+        select {
+            margin-right:10px;
+        }
+        .userList {
+            width: 70%;
+            height: 100%;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</th:block>
+
+<div layout:fragment="content">
+
+    <form th:action="@{'/admin/userList/' + ${userList.number}}" role="form" method="get" th:object="${userList}" class="userList">
+        <p class="h2">
+            계정 관리
+        </p>
+        <button type="button" class="btn btn-outline-info float-right" style="margin-bottom: 10px" onclick="location.href='/admin/users/new'" sec:authorize="hasAnyAuthority('ROLE_ADMIN')">계정 등록</button>
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <td th:align="center">이메일</td>
+                <td th:align="center">이름</td>
+                <td th:align="center">주소</td>
+                <td th:align="center">사용자 등급</td>
+                <td th:align="center">등록일시</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user, status: ${userList.getContent()}">
+                <td th:width="180" th:align="center" th:text="${user.email}"></td>
+                <td  th:width="140" th:align="center">
+                    <a th:href="'/admin/users/'+${user.userNumber}" th:text="${user.userName}"></a>
+                </td>
+                <td th:text="${user.address}"></td>
+                <td th:width="150" th:align="center" th:text="${user.role == T(com.lanoa.constant.Role).USER} ? '일반' : '관리자'"></td>
+                <td th:width="200" th:align="center" th:text="${#temporals.format(user.createdDate, 'yyyy-MM-dd HH:mm')}"></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div th:with="start=${(userList.number/maxPage)*maxPage + 1}, end=(${(userList.totalPages == 0) ? 1 : (start + (maxPage - 1) < userList.totalPages ? start + (maxPage - 1) : userList.totalPages)})" >
+            <ul class="pagination justify-content-center">
+                <li class="page-item" th:classappend="${userList.first}?'disabled'">
+                    <a th:onclick="'javascript:page(' + ${userList.number - 1} + ')'" aria-label='Previous' class="page-link">
+                        <span aria-hidden='true'>Previous</span>
+                    </a>
+                </li>
+                <li class="page-item" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${userList.number eq page-1}?'active':''">
+                    <a th:onclick="'javascript:page(' + ${page - 1} + ')'" th:inline="text" class="page-link">[[${page}]]</a>
+                </li>
+                <li class="page-item" th:classappend="${userList.last}?'disabled'">
+                    <a th:onclick="'javascript:page(' + ${userList.number + 1} + ')'" aria-label='Next' class="page-link">
+                        <span aria-hidden='true'>Next</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="form-inline justify-content-center" th:object="${userSearchDto}">
+            <select th:field="*{searchUserRole}" class="form-control" style="width:auto;">
+                <option value="">사용자등급(전체)</option>
+                <option value="USER">일반</option>
+                <option value="ADMIN">관리자</option>
+            </select>
+            <select th:field="*{searchType}" class="form-control" style="width:auto;">
+                <option value="userName">이름</option>
+                <option value="email">이메일</option>
+            </select>
+            <input th:field="*{searchQuery}" type="text" class="form-control" placeholder="검색어를 입력해주세요">
+            <button id="searchBtn" type="submit" class="btn btn-primary">검색</button>
+        </div>
+    </form>
+</div>
+
+</html>

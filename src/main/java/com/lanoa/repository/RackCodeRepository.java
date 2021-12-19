@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface RackCodeRepository extends JpaRepository<RackCode, Long> {
+public interface RackCodeRepository extends JpaRepository<RackCode, Long>, RackCodeRepositoryCustom {
 
     List<RackCode> findByRackCodeId(String rackCode);
 }

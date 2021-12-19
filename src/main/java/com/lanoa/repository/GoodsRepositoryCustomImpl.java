@@ -3,14 +3,11 @@ package com.lanoa.repository;
 import com.lanoa.constant.GoodsSellStatus;
 import com.lanoa.dto.GoodsListDto;
 import com.lanoa.dto.GoodsSearchDto;
-import com.lanoa.entity.Goods;
 import com.lanoa.entity.QGoods;
 import com.lanoa.entity.QUser;
 import com.querydsl.core.QueryResults;
-import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
@@ -20,7 +17,6 @@ import org.thymeleaf.util.StringUtils;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 public class GoodsRepositoryCustomImpl implements GoodsRepositoryCustom {
@@ -77,9 +73,7 @@ public class GoodsRepositoryCustomImpl implements GoodsRepositoryCustom {
                                 QGoods.goods.price,
                                 QGoods.goods.goodsSellStatus,
                                 QUser.user.userName,
-                                //Expressions.dateTemplate(LocalDateTime.class, "to_date({0}, {1})", QGoods.goods.createdDate, "yyyy-MM-dd HH:mm:ss")))
                                 QGoods.goods.createdDate))
-                                //Expressions.stringTemplate("DATE_FORMAT({0}, {1})", QGoods.goods.createdDate, "%Y-%m-%d %H:%i")))
                 .on(QGoods.goods.createdBy.eq(QUser.user.email))
                 .where(regDateAfter(goodsSearchDto.getSearchDateType()),
                         searchSellStatusEq(goodsSearchDto.getSearchSellStatus()),

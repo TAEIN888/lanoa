@@ -72,7 +72,7 @@ public class goodsController {
         try {
             goodsService.updateGoods(goodsFormDto);
         } catch (Exception e) {
-            model.addAttribute("errorMessage", "상품 등록 중 오류가 발생하였습니다.");
+            model.addAttribute("errorMessage", "상품 정보 수정 중 오류가 발생하였습니다.");
             e.printStackTrace();
         }
 
@@ -81,7 +81,7 @@ public class goodsController {
 
     @GetMapping(value = {"/admin/goodsList", "/admin/goodsList/{page}"})
     public String goodsAdminPage(GoodsSearchDto goodsSearchDto, @PathVariable("page") Optional<Integer> page, Model model) {
-        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 5);
+        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 15);
         Page<GoodsListDto> goodsList = goodsService.getAdminGoodsPage(goodsSearchDto, pageable);
 
         model.addAttribute("goodsList", goodsList);
