@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface RackCodeRepository extends JpaRepository<RackCode, Long>, RackCodeRepositoryCustom {
 
-    List<RackCode> findByRackCodeId(String rackCode);
+    RackCode findByRackCodeId(String rackCodeId);
 }

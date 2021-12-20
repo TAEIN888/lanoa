@@ -45,7 +45,7 @@ public class WmsController {
             return "rackcode/rackCodeForm";
         }
 
-        return "redirect:/";
+        return this.userAdminPage(new RackCodeSearchDto(), Optional.of(0), model);
     }
 
     @GetMapping(value = {"/admin/rackcodelist", "/admin/rackcodelist/{page}"})
@@ -58,5 +58,36 @@ public class WmsController {
         model.addAttribute("maxPage", 5);
 
         return "rackcode/rackCodeManage";
+    }
+
+    @GetMapping(value = "/admin/rackcode/{rackCodeId}")
+    public String getRackCodeInfo(@PathVariable("rackCodeId") String rackCodeId, Model model) {
+        try {
+            RackCodeFormDto rackCodeFormDto = wmsService.getRackCodeInfo(rackCodeId);
+            model.addAttribute("rackCodeFormDto", rackCodeFormDto);
+        } catch (EntityNotFoundException e) {
+            model.addAttribute("errorMessage", "존재하지 않는 상품입니다.");
+            model.addAttribute("rackCodeFormDto", new RackCodeFormDto());
+            return "rackcode/rackCodeForm";
+        }
+
+        return "rackcode/rackCodeForm";
+    }
+
+    @PostMapping(value = "/admin/rackcode/{rackCodeId}")
+    public String updateRackCodeInfo(@Valid RackCodeFormDto rackCodeFormDto, BindingResult bindingResult, Model model) {
+
+        if (bindingResult.hasErrors()) {
+            return "rackcode/rackCodeForm";
+        }
+
+        try {
+            wmsService.updateRackCode(rackCodeFormDto);
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", "랙코드 정보 수정 중 오류가 발생하였습니다.");
+            e.printStackTrace();
+        }
+
+        return this.userAdminPage(new RackCodeSearchDto(), Optional.of(0), model);
     }
 }

@@ -12,6 +12,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -26,9 +28,32 @@ public class WmsService {
         return rackCode.getRackCodeId();
     }
 
-
     @Transactional(readOnly = true)
     public Page<RackCode> getAdminRackCodePage(RackCodeSearchDto rackCodeSearchDto, Pageable pageable) {
         return rackCodeRepository.getAdminRackCodePage(rackCodeSearchDto, pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public RackCodeFormDto getRackCodeInfo(String rackCodeId) {
+        RackCode rackCode = rackCodeRepository.findByRackCodeId(rackCodeId);
+
+        if (rackCode == null) {
+            throw new EntityNotFoundException();
+        }
+        RackCodeFormDto rackCodeFormDto = RackCodeFormDto.of(rackCode);
+
+        return rackCodeFormDto;
+    }
+
+    public String updateRackCode(RackCodeFormDto rackCodeFormDto) throws Exception {
+        RackCode rackCode = rackCodeRepository.findByRackCodeId(rackCodeFormDto.getRackCodeId());
+
+        if (rackCode == null) {
+            throw new EntityNotFoundException();
+        }
+
+        rackCode.updateRackCode(rackCodeFormDto);
+
+        return rackCode.getRackCodeId();
     }
 }

@@ -56,7 +56,7 @@ public class UserController {
             return "user/userForm";
         }
 
-        return "redirect:/";
+        return this.userAdminPage(new UserSearchDto(), Optional.of(0), model);
     }
 
     @GetMapping(value = {"/admin/userlist", "/admin/userlist/{page}"})
@@ -99,7 +99,7 @@ public class UserController {
             e.printStackTrace();
         }
 
-        return "redirect:/";
+        return this.userAdminPage(new UserSearchDto(), Optional.of(0), model);
     }
 
     @GetMapping(value = "/users/login")

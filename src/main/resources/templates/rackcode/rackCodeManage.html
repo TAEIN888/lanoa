@@ -45,7 +45,7 @@
 <div layout:fragment="content">
     <form th:action="@{'/admin/rackCodelist/' + ${rackCodeList.number}}" role="form" method="get" th:object="${rackCodeList}" class="rackCodeList">
         <p class="h2">
-            상품 관리
+            랙코드 관리
         </p>
         <button type="button" class="btn btn-outline-info float-right" style="margin-bottom: 10px" onclick="location.href='/admin/rackcode/new'" sec:authorize="hasAnyAuthority('ROLE_ADMIN')">랙코드 등록</button>
         <table class="table table-striped table-hover">
@@ -61,7 +61,7 @@
             <tr th:each="rackCode, status: ${rackCodeList.getContent()}">
                 <td th:width="100" th:align="center" th:text="${rackCode.rackCodeId}"></td>
                 <td>
-                    <a th:href="'/admin/goods/'+${rackCode.rackName}" th:text="${rackCode.rackName}"></a>
+                    <a th:href="'/admin/rackcode/'+${rackCode.rackCodeId}" th:text="${rackCode.rackName}"></a>
                 </td>
                 <td th:width="150" th:align="center" th:text="${rackCode.rackGrade == T(com.lanoa.constant.RackGrade).NORMAL} ? '정상' : '불량'"></td>
                 <td th:width="200" th:align="center" th:text="${#temporals.format(rackCode.createdDate, 'yyyy-MM-dd HH:mm')}"></td>

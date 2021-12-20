@@ -52,7 +52,7 @@ class RackCodeRepositoryTest {
     public void selectRackCodeByRackCodeNum() {
         this.createRackCodeList();
 
-        List<RackCode> rackCode = rackCodeRepository.findByRackCodeId("A010101");
+        RackCode rackCode = rackCodeRepository.findByRackCodeId("A010101");
 
         System.out.println(rackCode.toString());
     }

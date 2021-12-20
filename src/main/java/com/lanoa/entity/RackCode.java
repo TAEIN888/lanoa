@@ -1,6 +1,7 @@
 package com.lanoa.entity;
 
 import com.lanoa.constant.RackGrade;
+import com.lanoa.dto.RackCodeFormDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,4 +33,8 @@ public class RackCode extends BaseEntity {
         this.rackGrade = rackGrade;
     }
 
+    public void updateRackCode(RackCodeFormDto rackCodeFormDto) {
+        this.rackName = rackCodeFormDto.getRackName();
+        this.rackGrade = rackCodeFormDto.getRackGrade();
+    }
 }
