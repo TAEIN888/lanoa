@@ -24,7 +24,13 @@
                         <a class="nav-link dropdown-toggle" href="#" id="wmsdropdown" data-toggle="dropdown" aria-expanded="false" sec:authorize="isAuthenticated()">창고관리</a>
                         <div class="dropdown-menu" aria-labelledby="wmsdropdown">
                             <a class="dropdown-item" href="/admin/rackcodelist" sec:authorize="hasAnyAuthority('ROLE_ADMIN')">랙코드 관리</a>
-                            <a class="dropdown-item" href="/admin/goodsList" sec:authorize="hasAnyAuthority('ROLE_ADMIN')">상품 목록</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="stockdropdown" data-toggle="dropdown" aria-expanded="false" sec:authorize="isAuthenticated()">재고관리</a>
+                        <div class="dropdown-menu" aria-labelledby="stockdropdown">
+                            <a class="dropdown-item" href="/rack/racklist" sec:authorize="isAuthenticated()">재고 조회</a>
+                            <a class="dropdown-item" href="/rack/rackcodelist" sec:authorize="isAuthenticated()">입고 처리</a>
                         </div>
                     </li>
                     <li class="nav-item" sec:authorize="isAnonymous()">

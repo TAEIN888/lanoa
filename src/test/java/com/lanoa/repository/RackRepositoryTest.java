@@ -54,30 +54,29 @@ public class RackRepositoryTest {
         Goods goods = createGoods();
         RackCode rackCode = createRackCode();
         Rack savedRack = rackRepository.save(Rack.builder()
-                .rackCode(rackCode)
-                .goods(goods)
-                .rackQty(0)
+                .rackCodeId(rackCode.getRackCodeId())
+                .goodsCode(goods.getGoodsCode())
+                .rackQty(Long.valueOf(0))
                 .build());
-
         System.out.println(savedRack.toString());
     }
-
-    @Test
-    @DisplayName("랙 저장 테스트")
-    public void selectRackTest() {
-        Goods goods = createGoods();
-        RackCode rackCode = createRackCode();
-        Rack savedRack = rackRepository.save(Rack.builder()
-                .rackCode(rackCode)
-                .goods(goods)
-                .rackQty(0)
-                .build());
-
-        List<Rack> rackList = rackRepository.findByRackCode(rackCode);
-
-        for (Rack rack : rackList) {
-            System.out.println(rack.toString());
-        }
-
-    }
+//
+//    @Test
+//    @DisplayName("랙 저장 테스트")
+//    public void selectRackTest() {
+//        Goods goods = createGoods();
+//        RackCode rackCode = createRackCode();
+//        Rack savedRack = rackRepository.save(Rack.builder()
+//                .rackCode(rackCode)
+//                .goods(goods)
+//                .rackQty(Long.valueOf(0))
+//                .build());
+//
+//        List<Rack> rackList = rackRepository.findByRackCode(rackCode);
+//
+//        for (Rack rack : rackList) {
+//            System.out.println(rack.toString());
+//        }
+//
+//    }
 }

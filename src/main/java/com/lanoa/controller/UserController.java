@@ -15,7 +15,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
@@ -27,6 +26,24 @@ public class UserController {
 
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
+
+    @GetMapping(value = "createAdminUser")
+    public String createAdminuser(Model model) {
+        try {
+            userService.saveUser(User.builder()
+                    .userName("관리자")
+                    .email("pro_cess@naver.com")
+                    .password("xodls1597")
+                    .address("서울")
+                    .role(Role.ADMIN)
+                    .passwordEncoder(passwordEncoder)
+                    .build());
+        } catch (IllegalStateException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "redirect:/";
+        }
+        return "redirect:/";
+    }
 
     @GetMapping(value = "admin/users/new")
     public String userForm(Model model) {

@@ -1,5 +1,6 @@
 package com.lanoa.entity;
 
+import com.lanoa.dto.RackFormDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,30 +11,38 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "TRACK")
-@IdClass(RackId.class)
+//@IdClass(RackId.class)
 @Getter
 @NoArgsConstructor
 @ToString
-public class Rack extends BaseTimeEntity implements Serializable {
+public class Rack implements Serializable {
+//
+//    @Id
+//    private String rackCode;
+//
+//    @Id
+//    private String goodsCode;
 
-    @Id
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "rack_code")
-    private RackCode rackCode;
-
-    @Id
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "goods_code")
-    private Goods goodsCode;
-
+    @EmbeddedId
+    private RackId id;
 
     @Column(nullable = false)
-    private int rackQty; // 적재 수량
+    private Long rackQty; // 적재 수량
 
     @Builder
-    public Rack(RackCode rackCode, Goods goods, int rackQty) {
-        this.rackCode = rackCode;
-        this.goodsCode = goods;
-        this.rackQty = rackQty;
+    public Rack(String rackCodeId, String goodsCode, Long rackQty) {
+        RackCode rackCode = RackCode.builder()
+                .rackCodeId(rackCodeId)
+                .build();
+        Goods goods = Goods.builder()
+                .goodsCode(goodsCode)
+                .build();
+        RackId rackId = new RackId(rackCode, goods);
+        this.id = rackId;
+        this.rackQty = rackQty == null ? 0 : rackQty;
+    }
+
+    public void updateRack(RackFormDto rackFormDto) {
+        this.rackQty = this.rackQty + rackFormDto.getRackQty();
     }
 }

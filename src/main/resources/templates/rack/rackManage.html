@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layouts/layout1}">
+
+<!-- 사용자 스크립트 추가 -->
+<th:block layout:fragment="script">
+  <script th:inline="javascript">
+
+    $(document).ready(function() {
+      $("#searchBtn").on("click", function(e) {
+        e.preventDefault();
+        page(0);
+      });
+    });
+
+    function page(page) {
+      let searchType = $("#searchType").val();
+      let searchQuery = $("#searchQuery").val();
+
+      location.href="/rack/racklist/" + page + "?searchType=" + searchType
+              + "&searchQuery=" + searchQuery;
+    }
+  </script>
+</th:block>
+
+<!-- 사용자 CSS 추가 -->
+<th:block layout:fragment="css">
+  <style>
+    select {
+      margin-right:10px;
+    }
+    .rackList {
+      width: 70%;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  </style>
+</th:block>
+
+<div layout:fragment="content">
+  <form th:action="@{'/rack/racklist/' + ${rackList.number}}" role="form" method="get" th:object="${rackList}" class="rackList">
+    <p class="h2">
+      재고 조회
+    </p>
+    <button type="button" class="btn btn-outline-info float-right" style="margin-bottom: 10px" onclick="location.href='/rack/warehousing'" sec:authorize="isAuthenticated()">입고 처리</button>
+    <table class="table table-striped table-hover">
+      <thead>
+      <tr>
+        <td th:align="center">랙 코드</td>
+        <td th:align="center">랙명</td>
+        <td th:align="center">상품 코드</td>
+        <td th:align="center">상품명</td>
+        <td th:align="center">재고 수량</td>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="rack, status: ${rackList.getContent()}">
+        <td th:width="100" th:align="center" th:text="${rack.rackCodeId}"></td>
+        <td th:width="100" th:align="center" th:text="${rack.rackName}"></td>
+        <td th:width="100" th:align="center" th:text="${rack.goodsCode}"></td>
+        <td th:width="100" th:align="center" th:text="${rack.goodsName}"></td>
+        <td th:width="150" th:align="center" th:text="${rack.rackQty}"></td>
+      </tr>
+      </tbody>
+    </table>
+
+    <div th:with="start=${(rackList.number/maxPage)*maxPage + 1}, end=(${(rackList.totalPages == 0) ? 1 : (start + (maxPage - 1) < rackList.totalPages ? start + (maxPage - 1) : rackList.totalPages)})" >
+      <ul class="pagination justify-content-center">
+        <li class="page-item" th:classappend="${rackList.first}?'disabled'">
+          <a th:onclick="'javascript:page(' + ${rackList.number - 1} + ')'" aria-label='Previous' class="page-link">
+            <span aria-hidden='true'>Previous</span>
+          </a>
+        </li>
+
+        <li class="page-item" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${rackList.number eq page-1}?'active':''">
+          <a th:onclick="'javascript:page(' + ${page - 1} + ')'" th:inline="text" class="page-link">[[${page}]]</a>
+        </li>
+
+        <li class="page-item" th:classappend="${rackList.last}?'disabled'">
+          <a th:onclick="'javascript:page(' + ${rackList.number + 1} + ')'" aria-label='Next' class="page-link">
+            <span aria-hidden='true'>Next</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="form-inline justify-content-center" th:object="${rackSearchDto}">
+      <select th:field="*{searchType}" class="form-control" style="width:auto;">
+        <option value="rackCode">랙코드</option>
+        <option value="goodsName">상품명</option>
+      </select>
+      <input th:field="*{searchQuery}" type="text" class="form-control" placeholder="검색어를 입력해주세요">
+      <button id="searchBtn" type="submit" class="btn btn-primary">검색</button>
+    </div>
+
+  </form>
+</div>
+</html>

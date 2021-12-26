@@ -67,6 +67,7 @@ public class GoodsRepositoryCustomImpl implements GoodsRepositoryCustom {
         QueryResults<GoodsListDto> results = queryFactory
                 .from(QGoods.goods)
                 .leftJoin(QUser.user)
+                .on(QGoods.goods.createdBy.eq(QUser.user.email))
                 .select(Projections.constructor(GoodsListDto.class,
                                 QGoods.goods.goodsCode,
                                 QGoods.goods.goodsName,
@@ -74,7 +75,6 @@ public class GoodsRepositoryCustomImpl implements GoodsRepositoryCustom {
                                 QGoods.goods.goodsSellStatus,
                                 QUser.user.userName,
                                 QGoods.goods.createdDate))
-                .on(QGoods.goods.createdBy.eq(QUser.user.email))
                 .where(regDateAfter(goodsSearchDto.getSearchDateType()),
                         searchSellStatusEq(goodsSearchDto.getSearchSellStatus()),
                         searchTypeLike(goodsSearchDto.getSearchType(), goodsSearchDto.getSearchQuery()))

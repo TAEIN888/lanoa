@@ -6,19 +6,22 @@ import lombok.Setter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.config.Configuration;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
 public class RackFormDto {
 
-    @NotNull(message = "랙코드 값을 입력해주세요.")
+    @NotEmpty(message = "랙코드를 입력해주세요.")
     private String rackCode;
 
-    @NotNull(message = "상품코드 값을 입력해주세요.")
+    @NotEmpty(message = "상품코드를 입력해주세요.")
     private String goodsCode;
 
     @NotNull(message = "입고 수량을 입력해주세요.")
+    @Min(value = 1, message = "입고 수량은 1 이상이어야 합니다.")
     private Long rackQty;
 
     private static ModelMapper modelMapper = new ModelMapper();

@@ -10,6 +10,8 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "TGOODS")
@@ -34,10 +36,10 @@ public class Goods extends BaseEntity {
     private String goodsName; // 상품명
 
     @Column(name = "PRICE", nullable = false)
-    private int price; // 상품 가격
+    private int price = 0; // 상품 가격
 
     @Column(nullable = false)
-    private int stockQty; // 재고 수량
+    private int stockQty = 0; // 재고 수량
 
     @Lob
     @Column(nullable = false)
@@ -46,12 +48,16 @@ public class Goods extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private GoodsSellStatus goodsSellStatus; // 상품 판매 상태
 
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "GOODS_CODE")
+    private List<Rack> rackList = new ArrayList<>();
+
     @Builder
     public Goods(String goodsCode, String goodsName, Integer price, Integer stockQty, String goodsDetail, GoodsSellStatus goodsSellStatus) {
         this.goodsCode = goodsCode;
         this.goodsName = goodsName;
-        this.price = price;
-        this.stockQty = stockQty;
+        this.price = price == null ? 0 : price;
+        this.stockQty = stockQty == null ? 0 : stockQty;
         this.goodsDetail = goodsDetail;
         this.goodsSellStatus = goodsSellStatus;
     }

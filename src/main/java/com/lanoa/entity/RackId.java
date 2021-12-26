@@ -1,16 +1,25 @@
 package com.lanoa.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-
+import javax.persistence.Embeddable;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.io.Serializable;
 
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@NoArgsConstructor
+@Embeddable
+@AllArgsConstructor
+@RequiredArgsConstructor
+@Getter
 public class RackId implements Serializable {
 
-    private String rackCode;
+    @ManyToOne
+    @JoinColumn(name = "RACK_CODE")
+    private RackCode rackCode;
 
-    private String goodsCode;
+    @ManyToOne
+    @JoinColumn(name = "GOODS_CODE")
+    private Goods goodsCode;
 }

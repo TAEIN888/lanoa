@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "TRACKCODE")
@@ -23,8 +25,12 @@ public class RackCode extends BaseEntity {
     @Column(nullable = false, length = 100)
     private String rackName; // 랙코드명
 
-    @Column(nullable = false, length = 1)
+    @Column(nullable = false)
     private RackGrade rackGrade; // 랙 등급
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "RACK_CODE")
+    private List<Rack> rackList = new ArrayList<>();
 
     @Builder
     public RackCode(String rackCodeId, String rackName, RackGrade rackGrade) {

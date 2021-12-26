@@ -2,8 +2,6 @@ package com.lanoa.controller;
 
 import com.lanoa.dto.*;
 import com.lanoa.entity.RackCode;
-import com.lanoa.entity.User;
-import com.lanoa.service.GoodsService;
 import com.lanoa.service.WmsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -89,5 +87,55 @@ public class WmsController {
         }
 
         return this.userAdminPage(new RackCodeSearchDto(), Optional.of(0), model);
+    }
+
+    @GetMapping(value = {"/rack/rackcodelist", "/rack/rackcodelist/{page}"})
+    public String getWareHousingRackCode(RackCodeSearchDto rackCodeSearchDto, @PathVariable("page") Optional<Integer> page, Model model) {
+        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
+        Page<RackCode> rackCodeList = wmsService.getAdminRackCodePage(rackCodeSearchDto, pageable);
+
+        model.addAttribute("rackCodeList", rackCodeList);
+        model.addAttribute("rackCodeSearchDto", rackCodeSearchDto);
+        model.addAttribute("maxPage", 5);
+
+        return "rackcode/rackCodeWareHousing";
+    }
+
+    @GetMapping(value = "/rack/warehousing/{rackCode}")
+    public String rackWarehousingForm(@PathVariable("rackCode") String rackCode, Model model) {
+        RackFormDto rackFormDto = new RackFormDto();
+        rackFormDto.setRackCode(rackCode);
+
+        model.addAttribute("rackFormDto", rackFormDto);
+        return "rack/rackForm";
+    }
+
+    @PostMapping(value = "/rack/warehousing/{rackCode}")
+    public String rackWarehousing(@Valid RackFormDto rackFormDto, BindingResult bindingResult, @PathVariable("rackCode") String rackCode, Model model) {
+
+        if (bindingResult.hasErrors()) {
+            return "rack/rackForm";
+        }
+
+        try {
+            wmsService.rackWarehousing(rackFormDto);
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", "입고 처리 중 오류가 발생하였습니다.");
+            return "rack/rackForm";
+        }
+
+        return "redirect:/";
+    }
+
+    @GetMapping(value = {"/rack/racklist", "/rack/racklist/{page}"})
+    public String rackList(RackSearchDto rackSearchDto, @PathVariable("page") Optional<Integer> page, Model model) {
+        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
+        Page<RackListDto> rackList = wmsService.getRackListPage(rackSearchDto, pageable);
+
+        model.addAttribute("rackList", rackList);
+        model.addAttribute("rackSearchDto", rackSearchDto);
+        model.addAttribute("maxPage", 5);
+
+        return "rack/rackManage";
     }
 }

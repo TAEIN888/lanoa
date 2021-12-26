@@ -40,7 +40,7 @@
         <p class="h2" th:unless="${#strings.isEmpty(rackCodeFormDto.rackCodeId)}">
             랙코드 수정
         </p>
-        <div class="form-group">
+        <div class="form-group" th:if="${#strings.isEmpty(rackCodeFormDto.rackCodeId)}">
             <label th:for="rackCodeId">랙코드</label>
             <input type="text" th:field="*{rackCodeId}" class="form-control" placeholder="랙코드를 입력해주세요">
             <p th:if="${#fields.hasErrors('rackCodeId')}" th:errors="*{rackCodeId}" class="fieldError">Incorrect data</p>
