@@ -50,7 +50,7 @@ public class RackRepositoryCustomImpl implements RackRepositoryCustom {
                         QGoods.goods.goodsName,
                         QRack.rack.rackQty))
                 .where(searchTypeLike(rackSearchDto.getSearchType(), rackSearchDto.getSearchQuery()), QRack.rack.rackQty.gt(0))
-                .orderBy(QGoods.goods.goodsCode.asc())
+                .orderBy(QRackCode.rackCode.rackCodeId.asc())
                 .orderBy(QRack.rack.rackQty.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())

@@ -33,13 +33,12 @@ public class UserController {
             userService.saveUser(User.builder()
                     .userName("관리자")
                     .email("pro_cess@naver.com")
-                    .password("xodls1597")
+                    .password("adminuser")
                     .address("서울")
                     .role(Role.ADMIN)
                     .passwordEncoder(passwordEncoder)
                     .build());
         } catch (IllegalStateException e) {
-            model.addAttribute("errorMessage", e.getMessage());
             return "redirect:/";
         }
         return "redirect:/";
@@ -116,7 +115,7 @@ public class UserController {
             e.printStackTrace();
         }
 
-        return this.userAdminPage(new UserSearchDto(), Optional.of(0), model);
+        return "redirect:/admin/userlist";
     }
 
     @GetMapping(value = "/users/login")

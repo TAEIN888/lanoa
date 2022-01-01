@@ -13,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
@@ -43,11 +44,11 @@ public class WmsController {
             return "rackcode/rackCodeForm";
         }
 
-        return this.userAdminPage(new RackCodeSearchDto(), Optional.of(0), model);
+        return "redirect:/admin/rackcodelist";
     }
 
     @GetMapping(value = {"/admin/rackcodelist", "/admin/rackcodelist/{page}"})
-    public String userAdminPage(RackCodeSearchDto rackCodeSearchDto, @PathVariable("page") Optional<Integer> page, Model model) {
+    public String rackCodeList(RackCodeSearchDto rackCodeSearchDto, @PathVariable("page") Optional<Integer> page, Model model) {
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
         Page<RackCode> rackCodeList = wmsService.getAdminRackCodePage(rackCodeSearchDto, pageable);
 
@@ -86,7 +87,7 @@ public class WmsController {
             e.printStackTrace();
         }
 
-        return this.userAdminPage(new RackCodeSearchDto(), Optional.of(0), model);
+        return "redirect:/admin/rackcodelist";
     }
 
     @GetMapping(value = {"/rack/rackcodelist", "/rack/rackcodelist/{page}"})
@@ -110,8 +111,8 @@ public class WmsController {
         return "rack/rackForm";
     }
 
-    @PostMapping(value = "/rack/warehousing/{rackCode}")
-    public String rackWarehousing(@Valid RackFormDto rackFormDto, BindingResult bindingResult, @PathVariable("rackCode") String rackCode, Model model) {
+    @PostMapping(value = "/rack/warehousing")
+    public String rackWarehousing(@Valid RackFormDto rackFormDto, BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) {
             return "rack/rackForm";
@@ -119,12 +120,15 @@ public class WmsController {
 
         try {
             wmsService.rackWarehousing(rackFormDto);
+        } catch (EntityNotFoundException e) {
+            model.addAttribute("errorMessage", "존재하지 않는 상품코드입니다.");
+            return "rack/rackForm";
         } catch (Exception e) {
             model.addAttribute("errorMessage", "입고 처리 중 오류가 발생하였습니다.");
             return "rack/rackForm";
         }
 
-        return "redirect:/";
+        return "redirect:/rack/racklist";
     }
 
     @GetMapping(value = {"/rack/racklist", "/rack/racklist/{page}"})
@@ -137,5 +141,40 @@ public class WmsController {
         model.addAttribute("maxPage", 5);
 
         return "rack/rackManage";
+    }
+
+    @GetMapping(value = "/rack/rackmove")
+    public String rackMoveForm(@RequestParam String rackCode, @RequestParam String goodsCode, @RequestParam Long rackQty, Model model) {
+
+        RackMoveFormDto rackMoveFormDto = new RackMoveFormDto();
+        rackMoveFormDto.setRackCode(rackCode);
+        rackMoveFormDto.setGoodsCode(goodsCode);
+        rackMoveFormDto.setRackQty(rackQty);
+        rackMoveFormDto.setMoveRackCode("");
+        rackMoveFormDto.setMoveQty(Long.valueOf(0));
+
+        model.addAttribute("rackMoveFormDto", rackMoveFormDto);
+
+        return "rack/rackMoveForm";
+    }
+
+    @PostMapping(value = "/rack/rackmove")
+    public String rackMove(RackMoveFormDto rackMoveFormDto, BindingResult bindingResult, Model model) {
+
+        if (bindingResult.hasErrors()) {
+            return "rack/rackMoveForm";
+        }
+
+        try {
+            wmsService.rackMove(rackMoveFormDto);
+        } catch (EntityNotFoundException e) {
+            model.addAttribute("errorMessage", "랙 정보 값이 잘못되었습니다.");
+            return "rack/rackMoveForm";
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", "이동 가능 수량을 초과하였습니다.");
+            return "rack/rackMoveForm";
+        }
+
+        return "redirect:/rack/racklist";
     }
 }

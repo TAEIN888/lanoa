@@ -45,7 +45,7 @@ public class goodsController {
             return "goods/goodsForm";
         }
 
-        return this.goodsAdminPage(new GoodsSearchDto(), Optional.of(0), model);
+        return "redirect:/admin/goodsList";
     }
 
     @GetMapping(value = "/admin/goods/{goodsCode}")
@@ -76,7 +76,7 @@ public class goodsController {
             e.printStackTrace();
         }
 
-        return this.goodsAdminPage(new GoodsSearchDto(), Optional.of(0), model);
+        return "redirect:/admin/goodsList";
     }
 
     @GetMapping(value = {"/admin/goodsList", "/admin/goodsList/{page}"})

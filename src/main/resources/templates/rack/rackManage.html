@@ -45,15 +45,16 @@
     <p class="h2">
       재고 조회
     </p>
-    <button type="button" class="btn btn-outline-info float-right" style="margin-bottom: 10px" onclick="location.href='/rack/warehousing'" sec:authorize="isAuthenticated()">입고 처리</button>
     <table class="table table-striped table-hover">
       <thead>
       <tr>
-        <td th:align="center">랙 코드</td>
+        <td th:align="center">랙코드</td>
         <td th:align="center">랙명</td>
         <td th:align="center">상품 코드</td>
         <td th:align="center">상품명</td>
         <td th:align="center">재고 수량</td>
+        <td th:align="center"></td>
+        <td th:align="center"></td>
       </tr>
       </thead>
       <tbody>
@@ -61,8 +62,10 @@
         <td th:width="100" th:align="center" th:text="${rack.rackCodeId}"></td>
         <td th:width="100" th:align="center" th:text="${rack.rackName}"></td>
         <td th:width="100" th:align="center" th:text="${rack.goodsCode}"></td>
-        <td th:width="100" th:align="center" th:text="${rack.goodsName}"></td>
+        <td th:text="${rack.goodsName}"></td>
         <td th:width="150" th:align="center" th:text="${rack.rackQty}"></td>
+        <td th:width="110" th:align="center"><button type="button" class="btn btn-outline-secondary btn-sm" th:onclick="'location.href=\''+ @{'/rack/warehousing/' + ${rack.rackCodeId}} + '\''" sec:authorize="isAuthenticated()">입고 처리</button></td>
+        <td th:width="110" th:align="center"><button type="button" class="btn btn-outline-secondary btn-sm" th:onclick="'location.href=\''+ @{'/rack/rackmove?rackCode=' + ${rack.rackCodeId} + '&goodsCode=' + ${rack.goodsCode} + '&rackQty=' + ${rack.rackQty}} + '\''" sec:authorize="isAuthenticated()">재고 이동</button></td>
       </tr>
       </tbody>
     </table>

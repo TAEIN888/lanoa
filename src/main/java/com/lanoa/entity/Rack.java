@@ -1,6 +1,7 @@
 package com.lanoa.entity;
 
 import com.lanoa.dto.RackFormDto;
+import com.lanoa.dto.RackMoveFormDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,17 +12,10 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "TRACK")
-//@IdClass(RackId.class)
 @Getter
 @NoArgsConstructor
 @ToString
 public class Rack implements Serializable {
-//
-//    @Id
-//    private String rackCode;
-//
-//    @Id
-//    private String goodsCode;
 
     @EmbeddedId
     private RackId id;
@@ -44,5 +38,9 @@ public class Rack implements Serializable {
 
     public void updateRack(RackFormDto rackFormDto) {
         this.rackQty = this.rackQty + rackFormDto.getRackQty();
+    }
+
+    public void updateRackMove(RackMoveFormDto rackMoveFormDto) {
+        this.rackQty = this.rackQty + rackMoveFormDto.getMoveQty();
     }
 }
