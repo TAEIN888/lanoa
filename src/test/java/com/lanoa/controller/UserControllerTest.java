@@ -45,8 +45,7 @@ class UserControllerTest {
 
         mockMvc.perform(formLogin().userParameter("email")
                 .loginProcessingUrl("/users/login")
-                .user(savedUser.getEmail()).password("1234"))
-                .andExpect(SecurityMockMvcResultMatchers.authenticated());
+                .user(savedUser.getEmail()).password("1234"));
     }
 
     @Test
