@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -49,6 +50,7 @@ class RackCodeRepositoryTest {
 
     @Test
     @DisplayName("랙코드 조회 테스트")
+    @Transactional
     public void selectRackCodeByRackCodeNum() {
         this.createRackCodeList();
 
@@ -59,6 +61,7 @@ class RackCodeRepositoryTest {
 
     @Test
     @DisplayName("랙코드 조회 테스트")
+    @Transactional
     public void selectRackCode() {
         this.createRackCodeList();
 
