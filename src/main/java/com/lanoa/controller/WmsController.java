@@ -177,4 +177,39 @@ public class WmsController {
 
         return "redirect:/rack/racklist";
     }
+
+    @GetMapping(value = "/rack/rackout")
+    public String rackOutForm(@RequestParam String rackCode, @RequestParam String goodsCode, @RequestParam Long rackQty, Model model) {
+
+        RackOutFormDto rackOutFormDto = new RackOutFormDto();
+
+        rackOutFormDto.setRackCode(rackCode);
+        rackOutFormDto.setGoodsCode(goodsCode);
+        rackOutFormDto.setRackQty(rackQty);
+        rackOutFormDto.setOutQty(Long.valueOf(0));
+
+        model.addAttribute("rackOutFormDto", rackOutFormDto);
+
+        return "rack/rackOutForm";
+    }
+
+    @PostMapping(value = "/rack/rackout")
+    public String rackOut(RackOutFormDto rackOutFormDto, BindingResult bindingResult, Model model) {
+
+        if (bindingResult.hasErrors()) {
+            return "rack/rackOutForm";
+        }
+
+        try {
+            wmsService.rackOut(rackOutFormDto);
+        } catch (EntityNotFoundException e) {
+            model.addAttribute("errorMessage", "랙 정보 값이 잘못되었습니다.");
+            return "rack/rackOutForm";
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", "이동 가능 수량을 초과하였습니다.");
+            return "rack/rackOutForm";
+        }
+
+        return "redirect:/rack/racklist";
+    }
 }

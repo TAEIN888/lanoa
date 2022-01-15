@@ -134,9 +134,30 @@ public class WmsService {
         fromRack.updateRackMove(rackMoveFormDto);
 
         if (fromRack.getRackQty() < 0) {
+            rackMoveFormDto.setMoveQty(rackMoveFormDto.getMoveQty() * -1);
             throw new Exception();
         }
 
         return toRackCode.getRackCodeId();
+    }
+
+    public String rackOut(RackOutFormDto rackOutFormDto) throws Exception {
+
+        RackCode rackCode = RackCode
+                .builder()
+                .rackCodeId(rackOutFormDto.getRackCode())
+                .build();
+
+        Goods goods = Goods.builder()
+                .goodsCode(rackOutFormDto.getGoodsCode())
+                .build();
+
+        RackId rackId = new RackId(rackCode, goods);
+        Rack rack = rackRepository.findById(rackId)
+                .orElseThrow(EntityNotFoundException::new);
+
+        rack.updateRackOut(rackOutFormDto);
+
+        return rackCode.getRackCodeId();
     }
 }

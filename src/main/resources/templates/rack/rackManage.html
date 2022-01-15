@@ -55,6 +55,7 @@
         <td th:align="center">재고 수량</td>
         <td th:align="center"></td>
         <td th:align="center"></td>
+        <td th:align="center"></td>
       </tr>
       </thead>
       <tbody>
@@ -64,8 +65,9 @@
         <td th:width="100" th:align="center" th:text="${rack.goodsCode}"></td>
         <td th:text="${rack.goodsName}"></td>
         <td th:width="150" th:align="center" th:text="${rack.rackQty}"></td>
-        <td th:width="110" th:align="center"><button type="button" class="btn btn-outline-secondary btn-sm" th:onclick="'location.href=\''+ @{'/rack/warehousing/' + ${rack.rackCodeId}} + '\''" sec:authorize="isAuthenticated()">입고 처리</button></td>
-        <td th:width="110" th:align="center"><button type="button" class="btn btn-outline-secondary btn-sm" th:onclick="'location.href=\''+ @{'/rack/rackmove?rackCode=' + ${rack.rackCodeId} + '&goodsCode=' + ${rack.goodsCode} + '&rackQty=' + ${rack.rackQty}} + '\''" sec:authorize="isAuthenticated()">재고 이동</button></td>
+        <td th:width="70" th:align="center"><button type="button" class="btn btn-outline-secondary btn-sm" th:onclick="'location.href=\''+ @{'/rack/warehousing/' + ${rack.rackCodeId}} + '\''" sec:authorize="isAuthenticated()">입고</button></td>
+        <td th:width="70" th:align="center"><button type="button" class="btn btn-outline-secondary btn-sm" th:onclick="'location.href=\''+ @{'/rack/rackout?rackCode=' + ${rack.rackCodeId} + '&goodsCode=' + ${rack.goodsCode} + '&rackQty=' + ${rack.rackQty}} + '\''" sec:authorize="isAuthenticated()">출고</button></td>
+        <td th:width="70" th:align="center"><button type="button" class="btn btn-outline-secondary btn-sm" th:onclick="'location.href=\''+ @{'/rack/rackmove?rackCode=' + ${rack.rackCodeId} + '&goodsCode=' + ${rack.goodsCode} + '&rackQty=' + ${rack.rackQty}} + '\''" sec:authorize="isAuthenticated()">이동</button></td>
       </tr>
       </tbody>
     </table>

@@ -2,6 +2,7 @@ package com.lanoa.entity;
 
 import com.lanoa.dto.RackFormDto;
 import com.lanoa.dto.RackMoveFormDto;
+import com.lanoa.dto.RackOutFormDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -42,5 +43,9 @@ public class Rack implements Serializable {
 
     public void updateRackMove(RackMoveFormDto rackMoveFormDto) {
         this.rackQty = this.rackQty + rackMoveFormDto.getMoveQty();
+    }
+
+    public void updateRackOut(RackOutFormDto rackOutFormDto) {
+        this.rackQty = this.rackQty - rackOutFormDto.getOutQty();
     }
 }
