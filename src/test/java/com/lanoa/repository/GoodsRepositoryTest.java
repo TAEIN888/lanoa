@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.util.StringUtils;
 
 import javax.persistence.EntityManager;
@@ -88,7 +89,7 @@ class GoodsRepositoryTest {
         this.createGoodsList();
         List<Goods> goodsList = goodsRepository.findByGoodsName("테스트 상품 1");
         for (Goods goods : goodsList) {
-            System.out.println(goods.toString());
+            System.out.println(goods.getGoodsName());
         }
     }
 
@@ -99,7 +100,7 @@ class GoodsRepositoryTest {
         List<Goods> goodsList = goodsRepository.findByGoodsNameOrGoodsDetail("테스트 상품 1", "테스트 상품 상세 설명 5");
 
         for (Goods goods : goodsList) {
-            System.out.println(goods.toString());
+            System.out.println(goods.getGoodsName());
         }
     }
 
@@ -110,7 +111,7 @@ class GoodsRepositoryTest {
         List<Goods> goodsList = goodsRepository.findByPriceLessThan(10005);
 
         for (Goods goods : goodsList) {
-            System.out.println(goods.toString());
+            System.out.println(goods.getGoodsName());
         }
     }
 
@@ -121,7 +122,7 @@ class GoodsRepositoryTest {
         List<Goods> goodsList = goodsRepository.findByPriceLessThanOrderByPriceDesc(10005);
 
         for (Goods goods : goodsList) {
-            System.out.println(goods.toString());
+            System.out.println(goods.getGoodsName());
         }
     }
 
@@ -131,7 +132,7 @@ class GoodsRepositoryTest {
         this.createGoodsList();
         List<Goods> goodsList = goodsRepository.findByGoodsDetail("테스트 상품 상세 설명");
         for (Goods goods : goodsList) {
-            System.out.println(goods.toString());
+            System.out.println(goods.getGoodsName());
         }
     }
 
@@ -141,7 +142,7 @@ class GoodsRepositoryTest {
         this.createGoodsList();
         List<Goods> goodsList = goodsRepository.findByGoodsDetailByNative("테스트 상품 상세 설명");
         for (Goods goods : goodsList) {
-            System.out.println(goods.toString());
+            System.out.println(goods.getGoodsName());
         }
     }
 
@@ -160,7 +161,7 @@ class GoodsRepositoryTest {
         List<Goods> goodsList = query.fetch();
 
         for (Goods goods : goodsList) {
-            System.out.println(goods.toString());
+            System.out.println(goods.getGoodsName());
         }
     }
 
@@ -191,7 +192,7 @@ class GoodsRepositoryTest {
         List<Goods> resultGoodsList = goodsPagingResult.getContent();
 
         for (Goods resultGoods : resultGoodsList) {
-            System.out.println(resultGoods.toString());
+            System.out.println(resultGoods.getGoodsName());
         }
 
     }

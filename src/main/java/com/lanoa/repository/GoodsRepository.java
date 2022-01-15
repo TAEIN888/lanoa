@@ -22,6 +22,6 @@ public interface GoodsRepository extends JpaRepository<Goods, Long>, QuerydslPre
     @Query("select i from Goods i where i.goodsDetail like %:goodsDetail% order by i.price desc")
     List<Goods> findByGoodsDetail(@Param("goodsDetail") String goodsDetail);
 
-    @Query(value = "select * from Goods i where i.goods_detail like %:goodsDetail% order by i.price desc", nativeQuery = true)
+    @Query(value = "select * from tgoods i where i.goods_detail like %:goodsDetail% order by i.price desc", nativeQuery = true)
     List<Goods> findByGoodsDetailByNative(@Param("goodsDetail") String goodsDetail);
 }
