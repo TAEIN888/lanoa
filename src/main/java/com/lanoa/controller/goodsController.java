@@ -41,7 +41,7 @@ public class goodsController {
         try {
             goodsService.saveGoods(goodsFormDto);
         } catch (Exception e) {
-            model.addAttribute("errorMessage", "상품 등록 중 오류가 발생하였습니다.");
+            model.addAttribute("errorMessage", "상품 등록 중 오류가 발생하였습니다." + e.getMessage());
             return "goods/goodsForm";
         }
 
