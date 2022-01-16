@@ -126,6 +126,6 @@ public class UserController {
     @GetMapping(value = "/users/login/error")
     public String loginError(Model model) {
         model.addAttribute("loginErrorMsg", "이메일 또는 비밀번호를 확인해주세요.");
-        return "/user/userLoginForm";
+        return "user/userLoginForm";
     }
 }
