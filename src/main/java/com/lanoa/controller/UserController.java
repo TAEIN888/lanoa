@@ -120,7 +120,7 @@ public class UserController {
 
     @GetMapping(value = "/users/login")
     public String loginUser() {
-        return "/user/userLoginForm";
+        return "user/userLoginForm";
     }
 
     @GetMapping(value = "/users/login/error")
