@@ -12,6 +12,9 @@ cache:
 
 script:  "./mvnw clean package"
 
+before_install:
+  - chmod +x mvnw
+
 notifications:
   email:
     recipients:
