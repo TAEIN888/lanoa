@@ -19,7 +19,12 @@ notifications:
   email:
     recipients:
       - process0823@gmail.com
-      -
+
+before_deploy:
+  - zip -r lanoa *
+  - mkdir -p deploy
+  - mv lanoa.zip deploy/lanoa.zip
+
 deploy:
     - provider: s3
       access_key_id: $AWS_ACCESS_KEY
@@ -28,6 +33,7 @@ deploy:
       region: ap-northeast-2
       skip_cleanup: true
       acl: public_read
+      local_dir: deploy
       wait-until-deployed: true
       on:
         repo: TAEIN888/lanoa
