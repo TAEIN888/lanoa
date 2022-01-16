@@ -15,4 +15,4 @@ script:  "./mvnw clean package"
 notifications:
   email:
     recipients:
-      - pro_cess@kakao.com
+      - process0823@gmail.com
