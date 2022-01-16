@@ -26,8 +26,6 @@ class RackCodeRepositoryTest {
     @PersistenceContext
     EntityManager em;
 
-    @Test
-    @DisplayName("랙코드 저장 테스트")
     public void createRackCodeTest() {
         RackCode savedRackCode = rackCodeRepository.save(RackCode.builder()
                 .rackCodeId("A010101")
@@ -48,9 +46,6 @@ class RackCodeRepositoryTest {
         }
     }
 
-    @Test
-    @DisplayName("랙코드 조회 테스트")
-    @Transactional
     public void selectRackCodeByRackCodeNum() {
         this.createRackCodeList();
 
@@ -59,9 +54,6 @@ class RackCodeRepositoryTest {
         System.out.println(rackCode.toString());
     }
 
-    @Test
-    @DisplayName("랙코드 조회 테스트")
-    @Transactional
     public void selectRackCode() {
         this.createRackCodeList();
 
