@@ -33,7 +33,7 @@ public class IdGenerator implements IdentifierGenerator, Configurable {
 
         switch (tableName) {
             case "GOODS":
-                sql = "SELECT LPAD(IFNULL(MAX(GOODS_CODE) + 1, '1'), 8, '0') FROM TGOODS";
+                sql = "SELECT LPAD(IFNULL(MAX(GOODS_CODE) + 1, '1'), 8, '0') FROM tgoods";
                 break;
             default:
                 break;
