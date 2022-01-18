@@ -45,7 +45,7 @@ public class goodsController {
             return "goods/goodsForm";
         }
 
-        return "redirect:/admin/goodsList";
+        return "redirect:/admin/goodslist";
     }
 
     @GetMapping(value = "/admin/goods/{goodsCode}")
@@ -76,10 +76,10 @@ public class goodsController {
             e.printStackTrace();
         }
 
-        return "redirect:/admin/goodsList";
+        return "redirect:/admin/goodslist";
     }
 
-    @GetMapping(value = {"/admin/goodsList", "/admin/goodsList/{page}"})
+    @GetMapping(value = {"/admin/goodslist", "/admin/goodslist/{page}"})
     public String goodsAdminPage(GoodsSearchDto goodsSearchDto, @PathVariable("page") Optional<Integer> page, Model model) {
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 15);
         Page<GoodsListDto> goodsList = goodsService.getAdminGoodsPage(goodsSearchDto, pageable);
